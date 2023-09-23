@@ -38,7 +38,6 @@ void swap(char **str1, char **str2)
 	char *temp = *str1;
 	*str1 = *str2;
 	*str2 = temp;
-	//printf("%s\n%s\n\n\n",*str1,*str2);
 }
 void sort(char*** fileparameters,char*** filenames, int size)
 {
@@ -55,20 +54,7 @@ void sort(char*** fileparameters,char*** filenames, int size)
 			{
 				min_index = j;
 			}
-		//printf("%d",temp);
-		//printf(" %s %s", (*filenames)[j+1],(*filenames)[j]);
-			/*
-			if(strcmp((*filenames)[j+1],(*filenames)[j]) < 0)
-			{
-
-				swap(&(*filenames)[j+1],&(*filenames)[j]);
-				swap(&(*fileparameters)[j+1],&(*fileparameters)[j]);
-			}
-			*/
-		//printf(" %s %s\n\n", (*filenames)[j+1],(*filenames)[j]);
-			//printf("No error here\n");
 		}
-		
 		swap(&(*filenames)[i],&(*filenames)[min_index]);
 		swap(&(*fileparameters)[i],&(*fileparameters)[min_index]);
 		
@@ -127,10 +113,8 @@ int main(int argc, char* argv[]){
 		strftime(time,sizeof(time),"%b %d %H:%M",t);
 		k +=  snprintf(fileparameters[index]+k,BUFSIZE-k,"  %s  ",time);
 		snprintf(filenames[index],FILESIZE,"%s",de->d_name);
-		//printf("%s\n",fileparameters[index]);
 		k = 0;
 		index++;
-		//printf("%d\n",index);
 	}
 	
 //printf("\n");

@@ -1,4 +1,4 @@
-#include "linklist.c"
+#include "sll.c"
 int main(){
     NODE START=NULL;
     InsertLast(&START,30);

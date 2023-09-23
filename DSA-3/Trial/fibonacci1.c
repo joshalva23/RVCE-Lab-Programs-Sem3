@@ -3,7 +3,6 @@
 #include<time.h>
 unsigned long long int fibonacci(unsigned long long int f1,unsigned long long int f2,unsigned long long int count){
 	static int n=1;
-	//printf("%lld \n",f3);
 	if(n==count)	
 		return f1;
 	unsigned long long int f3=f1+f2;
