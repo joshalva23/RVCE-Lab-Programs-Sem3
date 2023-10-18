@@ -1,12 +1,11 @@
 #include <iostream>
 #include <string>
 #define ALPHABET_SIZE 26
-using namespace std;
+#define ASCII_START 97
 class TRIE
 {
     TRIE *child[ALPHABET_SIZE];
     char data;
-    int n;
     bool isEndOfString;
 
 public:
@@ -15,7 +14,6 @@ public:
         for (int i = 0; i < ALPHABET_SIZE; i++)
             child[i] = NULL;
         isEndOfString = false;
-        n = 0;
     }
 
     TRIE(bool a)
@@ -23,7 +21,6 @@ public:
         for (int i = 0; i < ALPHABET_SIZE; i++)
             child[i] = NULL;
         isEndOfString = a;
-        n = 0;
     }
 
     bool isEND()
@@ -37,27 +34,50 @@ public:
 
     int insert(char ch, bool B)
     {
-        child[n] = new TRIE(B);
-        child[n]->data = ch;
-        ++n;
-        return n - 1;
+        int n = ch - ASCII_START;
+        if(n >=0 && n <= ALPHABET_SIZE){
+            child[n] = new TRIE(B);
+            child[n]->data = ch;
+        }
+        else
+        {
+            exit(0);
+        }
+        return n;
     }
 
     int findindex(const char ch)
     {
         int i = 0;
-        while (child[i] != NULL)
+        if(child[ch-97] != NULL)
         {
-            if (child[i]->data == ch)
-                return i;
-            i++;
+            if (child[ch-97]->data == ch)
+                return ch-97;
         }
         return -1;
     }
 };
 TRIE *ROOT = NULL;
 
-void InsertintoTRIE(const string s)
+void InsertintoTRIE(const std::string s)
+{
+    TRIE *temp = ROOT;
+    int index = 0;
+    int i;
+    for (i = 0; i < s.length()-1; i++)
+    {
+        index = temp->findindex(s[i]);
+        if (index == -1)
+            index = temp->insert(s[i], false);
+        temp = temp->getaddress(index);
+    }
+    index = temp->findindex(s[i]);
+    if (index == -1)
+        index = temp->insert(s[i], true);
+    std::cout << std::endl;
+}
+
+void SearchinTRIE(const std::string s)
 {
     TRIE *temp = ROOT;
     int index = 0;
@@ -66,43 +86,35 @@ void InsertintoTRIE(const string s)
     {
         index = temp->findindex(s[i]);
         if (index == -1)
-            index = temp->insert(s[i], false);
-        temp = temp->getaddress(index);
-    }
-    cout << endl;
-}
-
-void SearchinTRIE(const string s)
-{
-    TRIE *temp = ROOT;
-    int index = 0;
-    for (int i = 0; i < s.length(); i++)
-    {
-        index = temp->findindex(s[i]);
-        if (index == -1)
         {
-            cout << "Word doesn't exist in TRIE" << endl;
+            std::cout << "Word doesn't exist in TRIE" << std::endl;
             return;
         }
         temp = temp->getaddress(index);
     }
-    cout << "Word exists in TRIE" << endl;
+    if(temp->isEND())
+        std::cout << "Word exists in TRIE" << std::endl;
+    else
+        std::cout << "Word doesn't exist in TRIE" << std::endl;
 }
+
 int main()
 {
     ROOT = new TRIE();
     TRIE *temp = ROOT;
     int index;
     int ch;
-    string s;
+    std::string s;
     bool isAlpha = 0;
     while (1)
     {
-        cout << "Your options\n"
+        std::cout << std::endl
+             << "Your options\n"
              << "1.Insert\n"
              << "2.Search\n"
+             << "3.EXIT\n"
              << "Enter choice:";
-        cin >> ch;
+        std::cin >> ch;
         switch (ch)
         {
         case 1:
@@ -115,8 +127,10 @@ int main()
             std::cin >> s;
             SearchinTRIE(s);
             break;
+        case 3:
+            return EXIT_SUCCESS;
         default:
-            std::cout << "No such option" << endl;
+            std::cout << "No such option" << std::endl;
         }
     }
 }
